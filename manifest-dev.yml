@@ -1,0 +1,9 @@
+applications:
+- path: .
+  memory: 1024M
+  instances: 1
+  domain: mybluemix.net
+  name: construrama-price-bid-dev
+  host: construrama-price-bid-dev
+  disk_quota: 1024M
+  command: npm start

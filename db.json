@@ -1,0 +1,12 @@
+{
+  "greetings": [
+    {
+      "hello": "hello world",
+      "goodbye": "goodbye world",
+      "morning": "good morning",
+      "afternoon": "good afternoon",
+      "evening": "good evening",
+      "night": "good night"
+    }
+  ]
+}
