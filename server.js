@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
 
 app.use(express.static(__dirname + '/wwww'));
 
-console.log(__dirname + '/dist');
+console.log(__dirname + '/www');
 
 app.listen(appEnv.port, function () {
   console.log('server starting on ' + appEnv.url);
