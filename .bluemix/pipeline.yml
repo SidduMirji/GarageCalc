@@ -1,0 +1,96 @@
+---
+stages:
+  - name: Package
+    inputs:
+      - type: git
+        branch: master
+    triggers:
+      - type: commit
+    jobs:
+      - name: distribution
+        type: builder
+        build_type: npm
+        script: |-
+          #!/bin/bash
+
+          git branch integration
+          git fetch origin integration
+          git merge integration --ff-only
+
+          export PATH=/opt/IBM/node-v4.2/bin:./node_modules/.bin:$PATH
+          npm i
+          npm run dist
+
+          mv ./node_modules ./node_modules.bak
+          mv .git .git.bak
+  - name: Test
+    inputs:
+      - type: job
+        stage: Package
+        job: distribution
+    triggers:
+      - type: stage
+    jobs:
+      - name: lint
+        type: tester
+        script: |-
+          #!/bin/bash
+          mv ./node_modules.bak ./node_modules
+
+          npm run lint
+      - name: 'unit specs'
+        type: tester
+        script: |-
+          #!/bin/bash
+          mv ./node_modules.bak ./node_modules
+
+          npm run test:remote
+        enable_tests: true
+        test_file_pattern: '*.xml, generated/*.xml'
+  - name: 'Last Good Build'
+    inputs:
+      - type: job
+        stage: Package
+        job: distribution
+    triggers:
+      - type: stage
+    jobs:
+      - name: 'new good build'
+        type: builder
+        build_type: shell
+        script: |-
+          #!/bin/bash
+          rm -rf ./node_modules.bak
+          mv .git.bak .git
+
+          git checkout integration
+          git pull origin integration
+          git merge master --no-ff --log
+          git push origin integration
+  - name: Deploy
+    inputs:
+      - type: job
+        stage: Package
+        job: distribution
+    triggers:
+      - type: stage
+    properties:
+      - name: APP_NAME
+        value: '${CF_APP}'
+        type: text
+    jobs:
+      - name: 'blue-green'
+        type: deployer
+        target:
+          url: '${CF_TARGET_URL}'
+          organization: '${CF_ORGANIZATION}'
+          space: '${CF_SPACE}'
+          application: '${CF_APP}'
+        script: |-
+          #!/bin/bash
+          rm -rf ./node_modules.bak
+          rm -rf .git.bak
+
+          cf push "${CF_APP}-dev-blue" -n "${CF_APP}-dev"
+          cf delete "${CF_APP}-dev-green" --f
+          cf rename "${CF_APP}-dev-blue" "${CF_APP}-dev-green"
