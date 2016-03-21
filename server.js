@@ -8,7 +8,7 @@ app.use(function (req, res, next) {
 
   var credentials = auth(req);
 
-  if (!credentials || credentials.name !== 'john' || credentials.pass !== 'secret') {
+  if (!credentials || credentials.name !== 'sidd' || credentials.pass !== 'mirji') {
     res.statusCode = 401;
     res.setHeader('WWW-Authenticate', 'Basic realm="example"');
     return res.end('Access denied');
@@ -16,7 +16,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(express.static(__dirname + '/dist'));
+app.use(express.static(__dirname + '/wwww'));
 
 console.log(__dirname + '/dist');
 
