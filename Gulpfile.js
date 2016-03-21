@@ -1,6 +1,7 @@
 var browser = require('browser-sync');
 var del = require('del');
 var gulp = require('gulp');
+var build =require('run-sequence').use(gulp).
 var eslint = require('gulp-eslint');
 var listGulpTasks = require('gulp-task-listing');
 var sync = require('run-sequence');
