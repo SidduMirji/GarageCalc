@@ -1,7 +1,7 @@
 var browser = require('browser-sync');
 var del = require('del');
 var gulp = require('gulp');
-var build =require('run-sequence').use(gulp).
+ 
 var eslint = require('gulp-eslint');
 var listGulpTasks = require('gulp-task-listing');
 var sync = require('run-sequence');
@@ -85,7 +85,7 @@ gulp.task('default', function(done) {
 });
 
 gulp.task('dist', function(done) {
-  sync('clean', 'build', 'copy', done);
+  sync('clean', 'copy', done);
 });
 
 
