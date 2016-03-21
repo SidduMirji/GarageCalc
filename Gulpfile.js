@@ -85,7 +85,7 @@ gulp.task('default', function(done) {
 });
 
 gulp.task('dist', function(done) {
-  sync('clean', 'copy', done);
+  sync('clean', done);
 });
 
 
