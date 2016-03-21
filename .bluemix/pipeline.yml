@@ -5,7 +5,7 @@ stages:
       - type: git
         branch: master
     triggers:
-      - type: commit
+      - type: commit 
     jobs:
       - name: distribution
         type: builder
@@ -37,7 +37,7 @@ stages:
           #!/bin/bash
           mv ./node_modules.bak ./node_modules
 
-          npm run lint
+         #npm run lint
       - name: 'unit specs'
         type: tester
         script: |-
