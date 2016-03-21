@@ -13,7 +13,7 @@ var gutil = require('gulp-util');
 var bower = require('bower');
 var concat = require('gulp-concat');
 var sass = require('node-sass');
-var minifyCss = require('gulp-clear-css');
+var minifyCss = require('gulp-clean-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 
